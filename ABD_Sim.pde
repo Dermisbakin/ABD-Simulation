@@ -258,8 +258,8 @@ public void keyPressed(){
     }
   }
   if (key == 'h'){
-    if(speed != 6000){
-      speed = 6000;
+    if(speed != 1000){
+      speed = 1000;
     } else {
       speed = 5;
     }
