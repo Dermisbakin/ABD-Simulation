@@ -326,7 +326,6 @@ public void trowelFarm(){
   if(!item.equals("null")){
     text(item + " Obtained!",300,430);
     MyLogs.display(item + " Obtained!");
-    System.out.println(item + " Obtained!");
   }
 }
 
@@ -368,7 +367,6 @@ public void arrowFarm(){
     MyPrivateServer.setArrows(MyPrivateServer.getArrows()-1);
     MyPrivateServer.setStand(stand);
     text(stand + " Obtained!",300,450);
-    System.out.println(stand + " Obtained!");
     MyLogs.display(stand + " Obtained!");
   }
   if ((!MyPrivateServer.getStand().equals("Doppio's King Crimson")) && (!MyPrivateServer.getStand().equals("Whitesnake")) && (!MyPrivateServer.getStand().equals("The World")) && (MyPrivateServer.getRokas() > 0)){
@@ -385,19 +383,16 @@ public void rareRoll(){
     MyPrivateServer.setStand("Two-Arm Doppio's King Crimson");
     text("Doppio's King Crimson upgraded to Two-Arm Doppio's King Crimson!",300,470);
     MyLogs.display("Doppio's King Crimson upgraded to Two-Arm Doppio's King Crimson!");
-    System.out.println("Doppio's King Crimson upgraded to Two-Arm Doppio's King Crimson!");
     MyPrivateServer.setFrogs(MyPrivateServer.getFrogs()-1);
     if ((int)(Math.random()*100) >= 1){
        MyPrivateServer.setStand("Full-Body King Crimson");
        text("Two-Arm Doppio's King Crimson upgraded to Full-Body King Crimson!",300,490);
        MyLogs.display("Two-Arm Doppio's King Crimson upgraded to Full-Body King Crimson!");
-      System.out.println("Two-Arm Doppio's King Crimson upgraded to Full-Body King Crimson!");
     } else {
        MyPrivateServer.setStand("Manga King Crimson");
        MyPrivateServer.setMangas(MyPrivateServer.getMangas()+1);
        text("Two-Arm Doppio's King Crimson upgraded to Manga King Crimson!",300,510);
        MyLogs.display("Two-Arm Doppio's King Crimson upgraded to Manga King Crimson!");
-      System.out.println("Two-Arm Doppio's King Crimson upgraded to Manga King Crimson!");
     }
     if ((MyPrivateServer.getSpheres() > 0) && (MyPrivateServer.getStand().equals("Full-Body King Crimson"))){
       MyPrivateServer.setSpheres(MyPrivateServer.getSpheres()-1);
@@ -405,7 +400,6 @@ public void rareRoll(){
       MyPrivateServer.setOreos(MyPrivateServer.getOreos()+1);
       text("Full-Body King Crimson upgraded to Monochromatic King Crimson!",300,510);
       MyLogs.display("Full-Body King Crimson upgraded to Monochromatic King Crimson!");
-      System.out.println("Full-Body King Crimson upgraded to Monochromatic King Crimson!");
     }
   } else if((MyPrivateServer.getStand().equals("Doppio's King Crimson")) && (MyPrivateServer.getRokas() > 0)){
     MyPrivateServer.setRokas(MyPrivateServer.getRokas()-1);
@@ -419,19 +413,16 @@ public void rareRoll(){
      MyPrivateServer.setStand("Vampire");
      text("Vampire Obtained!",300,470);
      MyLogs.display("Vampire Obtained!");
-     System.out.println("Vampire Obtained!");
      MyPrivateServer.setMasks(MyPrivateServer.getMasks()-1);
      if((int)(Math.random()*17) >= 1){
        MyPrivateServer.setStand("Santana");
        text("Upgraded Vampire to Santana!",300,490);
        MyLogs.display("Upgraded Vampire to Santana!");
-       System.out.println("Upgraded Vampire to Santana!");
      } else {
        MyPrivateServer.setStand("Kars");
        MyPrivateServer.setKars(MyPrivateServer.getKars()+1);
        text("Upgraded Vampire to Kars!",300,510);
        MyLogs.display("Upgraded Vampire to Kars!");
-       System.out.println("Upgraded Vampire to Kars!");
      }
   }
   if((MyPrivateServer.getStand().equals("Whitesnake")) && (MyPrivateServer.getDiaries() >= 2)){
@@ -439,19 +430,16 @@ public void rareRoll(){
      MyPrivateServer.setStand("C-Moon");
      text("Upgraded Whitesnake to C-Moon!",300,470);
      MyLogs.display("Upgraded Whitesnake to C-Moon!");
-     System.out.println("Upgraded Whitesnake to C-Moon!");
      MyPrivateServer.setDiaries(MyPrivateServer.getDiaries()-1);
      if ((int)(Math.random()*100) >= 1){
        MyPrivateServer.setStand("Made in Heaven");
        text("C-Moon upgraded to Made in Heaven!",300,490);
        MyLogs.display("C-Moon upgraded to Made in Heaven!");
-       System.out.println("C-Moon upgraded to Made in Heaven!");
      } else {
        MyPrivateServer.setStand("Made in Galaxy");
        MyPrivateServer.setMiGs(MyPrivateServer.getMiGs()+1);
        text("C-Moon upgraded to Made in Galaxy!",300,490);
        MyLogs.display("C-Moon upgraded to Made in Galaxy!");
-       System.out.println("C-Moon upgraded to Made in Galaxy!");
      }
   } else if((MyPrivateServer.getStand().equals("Whitesnake")) && (MyPrivateServer.getRokas() > 0)){
     MyPrivateServer.setRokas(MyPrivateServer.getRokas()-1);
@@ -465,13 +453,11 @@ public void rareRoll(){
     MyPrivateServer.setStand("Vampiric The World");
     text("Upgraded The World to Vampiric The World!",300,470);
     MyLogs.display("Upgraded The World to Vampiric The World!");
-    System.out.println("Upgraded The World to Vampiric The World!");
     MyPrivateServer.setCams(MyPrivateServer.getCams()-1);
     MyPrivateServer.setStand("Shadow The World");
     MyPrivateServer.setSTWs(MyPrivateServer.getSTWs()+1);
     text("Upgraded Vampiric The World to Shadow The World!",300,490);
     MyLogs.display("Upgraded Vampiric The World to Shadow The World!");
-    System.out.println("Upgraded Vampiric The World to Shadow The World!");
   } else if((MyPrivateServer.getStand().equals("The World")) && (MyPrivateServer.getRokas() > 0) && (MyPrivateServer.getCams() == 0)){
     MyPrivateServer.setRokas(MyPrivateServer.getRokas()-1);
     text("Stand Roka'd!",300,450);
