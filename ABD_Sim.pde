@@ -4,7 +4,7 @@ Logs MyLogs = new Logs();
 ConfidenceInterval Statistics = new ConfidenceInterval();
 String[] TrowelDig = new String[8];
 double[] tDist = new double[71];
-String[] select = new String[6];
+String[] select = new String[7];
 int digs = 0;
 boolean sewers = true;
 boolean running = false;
@@ -12,6 +12,7 @@ int speed = 5;
 boolean statsMode = false;
 int x = 0;
 int c = 0;
+boolean fvFarming = true;
 
 void setup(){
  size(1200,800); 
@@ -59,6 +60,7 @@ void setup(){
  select[2] = "Manga";
  select[3] = "STW";
  select[4] = "MiG";
+ select [6] = "Tusk Act 4";
     tDist[0] = 2.0452;
     tDist[1] = 2.0423;
     tDist[2] = 2.0395;
@@ -144,7 +146,7 @@ select[5] = ArrowStands[c];
  line(0,600,1200,600);
  MyLogs.show();
  textAlign(CENTER);
- text("ABD Farming Sim. 1.2.3",300,50);
+ text("ABD Farming Sim. 1.3.1",300,50);
  if (running == true){
   MyPrivateServer.spawn();
   if (sewers == true){sewerFarm();}
@@ -160,14 +162,15 @@ select[5] = ArrowStands[c];
     text("I to speed up simulation",300,410);
     text("K to slow down simulation",300,430);
     text("H to put on hyperspeed",300,450);
+    text("F to switch Funny Valentine Farming",300,470);
     fill(0, 222, 59);
-    text("LEFT and RIGHT keys to set Custom Stand Tracker.",300,470);
+    text("LEFT and RIGHT keys to set Custom Stand Tracker.",300,490);
     fill(255,0,0);
-    text("Changing Custom Stand will reset your current progress in Custom Stand Tracker.",300,490);
+    text("Changing Custom Stand will reset your current progress in Custom Stand Tracker.",300,510);
   } else {
     text("Setting up data collection...",300,370);
     fill(255,0,0);
-    text("Changing Custom Stand will reset your current progress in Custom Stand Tracker.",300,490);
+    text("Changing Custom Stand will reset your current progress in Custom Stand Tracker.",300,510);
   }
  }
  fill(198, 214, 69);
@@ -201,9 +204,13 @@ select[5] = ArrowStands[c];
   textAlign(LEFT);
  text("Dirt Piles: " + MyPrivateServer.getDirtPiles(),450,150);
   textAlign(LEFT);
+ text("Holy Corpses: " + MyPrivateServer.getCorpses(),240,110);
+  textAlign(LEFT);
  text("Kars Obtained: " + MyPrivateServer.getKars(),15,290);
   textAlign(LEFT);
  text("Oreos Obtained: " + MyPrivateServer.getOreos(),225,290);
+ textAlign(LEFT);
+ text("Tusk Act 4s Obtained: " + MyPrivateServer.getTusks(), 200,310);
  textAlign(LEFT);
  fill(0, 222, 59);
  text(ArrowStands[c] + " Obtained: " + MyPrivateServer.getCustom(),15,270);
@@ -217,7 +224,9 @@ select[5] = ArrowStands[c];
  textAlign(LEFT);
  text("MiGs Obtained: " + MyPrivateServer.getMiGs(),415,310);
  textAlign(LEFT);
- text("Sewer Farming = " + sewers, 420, 30); 
+ text("Sewer Farming = " + sewers, 220, 150); 
+ textAlign (LEFT);
+ text("Valentine Farming = " + fvFarming,205, 170);
  text("Framerate: " + speed, 15, 30);
  if(statsMode == true){
   text("Analyze Stand/Spec: " + select[x],20,620);
@@ -264,6 +273,8 @@ select[5] = ArrowStands[c];
       text(Statistics.getMigSize() + " total Made in Galaxy samples.",20,680);
     } else if(select[x].equals(ArrowStands[c])){
       text(Statistics.getCustomSize() + " total " + ArrowStands[c] + " samples.",20,700);
+    } else if(select[x].equals("Tusk Act 4")){
+      text(Statistics.getTuskSize() + "total Tusk Act 4 samples.",20,680);
     }
    }
   }
@@ -326,6 +337,17 @@ select[5] = ArrowStands[c];
     fill(255);
     text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,680);
   }
+
+  if(Statistics.getTuskSize() == 100 && select[x].equals("Tusk Act 4")){
+    running = false;
+    fill(224, 45, 0);
+    text("Sample limit reached.",20,680);
+  }
+  if(Statistics.getTuskSize() >= 30 && select[x].equals("Tusk Act 4") && running == false){
+    fill(255);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,670);
+  }
+
  }
 }
 
@@ -354,7 +376,7 @@ public String arrowRoll(){
 }
 
 public class Server{
-  private int frogs, masks, spheres, arrows, rokas, lire, trowels, dirtPiles, Kars, Oreos, Mangas, cams, diaries, STWs, MiGs, custom;
+  private int frogs, masks, spheres, arrows, rokas, lire, trowels, dirtPiles, Kars, Oreos, Mangas, cams, diaries, corpseParts, STWs, MiGs, custom, Tusks;
   private double time;
   private String stand;
   public Server(){
@@ -376,6 +398,8 @@ public class Server{
   STWs = 0;
   MiGs = 0;
   custom = 0;
+  corpseParts = 0;
+  Tusks = 0;
   }
   public void spawn(){
     time+= 0.25;
@@ -412,6 +436,17 @@ public class Server{
     if (time%3 == 0){
       dirtPiles = 5;
     }
+    if(time%45 == 0 && fvFarming == true){
+      if((int)(Math.random()*100) >= 15){
+        lire+=1650;
+        text("Banknotes dropped from Funny Valentine!",300,410);
+        MyLogs.display("Banknotes dropped from Funny Valentine!");
+      } else {
+        corpseParts++;
+        text("Holy Corpse dropped from Funny Valentine!",300,410);
+        MyLogs.display("Holy Corpse dropped from Funny Valentine!");
+      }
+    }
   }
   public void reset(){
     time = 0;
@@ -432,6 +467,8 @@ public class Server{
     STWs = 0;
     MiGs = 0;
     custom = 0;
+    corpseParts = 0;
+    Tusks = 0;
   }
   
   public void setTime(double t){time = t;}
@@ -470,6 +507,10 @@ public class Server{
   public int getMiGs(){return MiGs;}
   public void setCustom(int C){custom = C;}
   public int getCustom(){return custom;}
+  public void setCorpses(int h){corpseParts = h;}
+  public int getCorpses(){return corpseParts;}
+  public void setTusks(int t){Tusks = t;}
+  public int getTusks(){return Tusks;}
 }
 
 public void keyPressed(){
@@ -480,6 +521,15 @@ public void keyPressed(){
     if(sewers == true && running == false){sewers = false;}
     else if (running == false){sewers = true;}
   }
+
+  if(key == 'f' && statsMode == false){
+    if(fvFarming == true){fvFarming = false;}
+    else {fvFarming = true;}
+  }  else if(key == 'f' && statsMode == true){
+    if(fvFarming == true && running == false){fvFarming = false;}
+    else if (running == false){fvFarming = true;}
+  }
+
 
   if(key == ' ' && statsMode == false){
     if(running == false){running = true;}
@@ -521,7 +571,7 @@ public void keyPressed(){
   }
 
   if(statsMode == true){
-    if (keyCode == UP && x != 5){
+    if (keyCode == UP && x != 6){
       x++;
       MyPrivateServer.reset();
     }
@@ -534,11 +584,11 @@ public void keyPressed(){
       MyPrivateServer.reset();
     }
     else if (keyCode == DOWN){
-      x = 5;
+      x = 6;
       MyPrivateServer.reset();
     }
   }
-  if ((key == ENTER && statsMode == true && running == false) && ((Statistics.getKarsSize() != 100 && select[x].equals("Kars")) || (Statistics.getOreoSize() != 100 && select[x].equals("Oreo")) || (Statistics.getMangaSize() != 100 && select[x].equals("Manga")) || (Statistics.getStwSize() != 100 && select[x].equals("STW")) || (Statistics.getMigSize() != 100 && select[x].equals("MiG")) || (Statistics.getCustomSize() != 100 && select[x].equals(ArrowStands[c])))){
+  if ((key == ENTER && statsMode == true && running == false) && ((Statistics.getKarsSize() != 100 && select[x].equals("Kars")) || (Statistics.getOreoSize() != 100 && select[x].equals("Oreo")) || (Statistics.getMangaSize() != 100 && select[x].equals("Manga")) || (Statistics.getStwSize() != 100 && select[x].equals("STW")) || (Statistics.getMigSize() != 100 && select[x].equals("MiG")) || (Statistics.getCustomSize() != 100 && select[x].equals(ArrowStands[c])) || (Statistics.getTuskSize() != 100 && select[x].equals("Tusk Act 4")))){
     running = true;
   } else if (key == ENTER){
     running = false;
@@ -563,9 +613,9 @@ public void keyPressed(){
     Statistics.clearCustomSample();
   }
   //Used to debug without waiting for sample size to increase
-  /*if (key == 'm' && Statistics.getKarsSize() != 100){
-    Statistics.setKarsSample(MyPrivateServer.getTime());
-  }*/
+  if (key == 'm' && Statistics.getTuskSize() != 100){
+    Statistics.setTuskSample(MyPrivateServer.getTime());
+  }
 }
 
 public void sewerFarm(){
@@ -597,7 +647,7 @@ public void minionDrop(){
 }
 
 public void buy(){
-  if (MyPrivateServer.getLire()>=3500){
+  if (MyPrivateServer.getLire()>=3500 && !(MyPrivateServer.getCorpses() >= 4)){
     MyPrivateServer.setLire(MyPrivateServer.getLire()-3500);
     MyPrivateServer.setTrowels(MyPrivateServer.getTrowels() + 1);
   }
@@ -680,7 +730,7 @@ public void arrowFarm(){
   }
   if ((!MyPrivateServer.getStand().equals("Doppio's King Crimson")) && (!MyPrivateServer.getStand().equals("Whitesnake")) && (!MyPrivateServer.getStand().equals("The World")) && (MyPrivateServer.getRokas() > 0) && !(MyPrivateServer.getStand().equals("Purple Haze") && c == 30)){
     MyPrivateServer.setRokas(MyPrivateServer.getRokas()-1);
-    text("Stand Roka'd!",300,450);
+    text("Stand Roka'd!",300,470);
     MyLogs.display("Stand Roka'd!");
     MyPrivateServer.setStand("Standless");
   }
@@ -809,6 +859,26 @@ public void rareRoll(){
     MyLogs.display("Stand Roka'd!");
     MyPrivateServer.setStand("Standless");
   }
+
+  if(MyPrivateServer.getLire() >= 10000 && MyPrivateServer.getCorpses() >= 4 && (!MyPrivateServer.getStand().equals("Whitesnake")) && (!MyPrivateServer.getStand().equals("The World")) && !MyPrivateServer.getStand().equals("Purple Haze")){
+    MyPrivateServer.setLire(MyPrivateServer.getLire()-10000);
+    MyPrivateServer.setCorpses(MyPrivateServer.getCorpses()-4);
+    text("Spin Obtained!",300,450);
+    MyLogs.display("Spin Obtained!");
+    text("Upgraded Spin to Tusk Act 1!",300,470);
+    MyLogs.display("Upgraded Spin to Tusk Act 1!");
+    text("Upgraded Tusk Act 1 to Tusk Act 2!",300,490);
+    MyLogs.display("Upgraded Tusk Act 1 to Tusk Act 2!");
+    text("Upgraded Tusk Act 2 to Tusk Act 3!",300,510);
+    MyLogs.display("Upgraded Tusk Act 2 to Tusk Act 3!");
+    MyPrivateServer.setTusks(MyPrivateServer.getTusks()+1);
+    text("Upgraded Tusk Act 3 to Tusk Act 4!",300,530);
+    MyLogs.display("Upgraded Tusk Act 3 to Tusk Act 4!");
+    if (select[x].equals("Tusk Act 4") && statsMode == true){
+        Statistics.setTuskSample(MyPrivateServer.getTime());
+        MyPrivateServer.reset();
+    }
+  }
 }
 
 public class Logs{
@@ -908,7 +978,7 @@ public class Logs{
 }
 
 public class ConfidenceInterval{
-  private ArrayList<Double> karsSample, oreoSample, mangaSample, stwSample, migSample, customSample;
+  private ArrayList<Double> karsSample, oreoSample, mangaSample, stwSample, migSample, customSample, tuskSample;
   public ConfidenceInterval(){
     karsSample = new ArrayList<Double>();
     oreoSample = new ArrayList<Double>();
@@ -916,6 +986,7 @@ public class ConfidenceInterval{
     stwSample = new ArrayList<Double>();
     migSample = new ArrayList<Double>();
     customSample = new ArrayList<Double>();
+    tuskSample = new ArrayList<Double>();
   }
   public String interval(String s){
     double[] list;
@@ -995,6 +1066,18 @@ public class ConfidenceInterval{
     } else if(s.equals(ArrowStands[c])){
       interval = 30-customSample.size() + " more " + ArrowStands[c] + " samples needed.";
     }
+     if(s.equals("Tusk Act 4") && tuskSample.size()>=30){
+      list = new double[tuskSample.size()];
+      for(int i=0; i<tuskSample.size();i++){
+        add += tuskSample.get(i);
+        list[i]=tuskSample.get(i);
+      }
+      mean = add/tuskSample.size();
+      stDev = sdDev(list);
+      interval = mean-tDist[tuskSample.size()-30]*stDev/sqrt(tuskSample.size()) + " to " + mean+tDist[tuskSample.size()-30]*stDev/sqrt(tuskSample.size());
+    } else if(s.equals("Tusk Act 4")){
+      interval = 30-tuskSample.size() + " more Tusk Act 4 samples needed.";
+    }
     return interval;
   }
   public void setKarsSample(double k){karsSample.add(k);}
@@ -1010,6 +1093,8 @@ public class ConfidenceInterval{
   public void setCustomSample(double c){customSample.add(c);}
   public int getCustomSize(){return customSample.size();}
   public void clearCustomSample(){customSample.clear();}
+  public void setTuskSample(double t){tuskSample.add(t);}
+  public int getTuskSize(){return tuskSample.size();}
 }
 
 public double sdDev(double[] list){
