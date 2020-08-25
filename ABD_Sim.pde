@@ -144,7 +144,7 @@ select[5] = ArrowStands[c];
  line(0,600,1200,600);
  MyLogs.show();
  textAlign(CENTER);
- text("ABD Farming Sim. 1.2.2",300,50);
+ text("ABD Farming Sim. 1.2.3",300,50);
  if (running == true){
   MyPrivateServer.spawn();
   if (sewers == true){sewerFarm();}
@@ -166,6 +166,8 @@ select[5] = ArrowStands[c];
     text("Changing Custom Stand will reset your current progress in Custom Stand Tracker.",300,490);
   } else {
     text("Setting up data collection...",300,370);
+    fill(255,0,0);
+    text("Changing Custom Stand will reset your current progress in Custom Stand Tracker.",300,490);
   }
  }
  fill(198, 214, 69);
@@ -222,26 +224,26 @@ select[5] = ArrowStands[c];
   if(running == false){
     if(select[x].equals("Kars") && Statistics.getKarsSize() < 100 && Statistics.getKarsSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text("Progress Saved.",20,700);
+      text("Progress Saved.",20,780);
     } else if(select[x].equals("Oreo") && Statistics.getOreoSize() < 100 && Statistics.getOreoSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text("Progress Saved.",20,700);
+      text("Progress Saved.",20,780);
     } else if(select[x].equals("Manga") && Statistics.getMangaSize() < 100 && Statistics.getMangaSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text("Progress Saved.",20,700);
+      text("Progress Saved.",20,780);
     } else if(select[x].equals("STW") && Statistics.getStwSize() < 100 && Statistics.getStwSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text("Progress Saved.",20,700);
+      text("Progress Saved.",20,780);
     } else if(select[x].equals("MiG") && Statistics.getMigSize() < 100 && Statistics.getMigSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text("Progress Saved.",20,700);
+      text("Progress Saved.",20,780);
     }  else if(select[x].equals(ArrowStands[c]) && Statistics.getCustomSize() < 100 && Statistics.getCustomSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text("LEFT and RIGHT keys to set Custom Stand Tracker.",20,470);
-      text("Progress Saved.",20,700);
+      text("LEFT and RIGHT keys to set Custom Stand Tracker.",20,660);
+      text("Progress Saved.",20,780);
     } else {
       text("Press the UP and DOWN arrow keys to select. Press ENTER to confirm.",20,640);
-      if (select[x].equals(ArrowStands[c])){text("LEFT and RIGHT keys to set Custom Stand Tracker.",20,660);}
+      if (select[x].equals(ArrowStands[c])){text("LEFT and RIGHT keys to set Custom Stand Tracker.",20,705);}
     }
   }
 
@@ -249,68 +251,80 @@ select[5] = ArrowStands[c];
     if (Statistics.interval(select[x]).contains("more")){
      text(Statistics.interval(select[x]),20,660);
    } else {
-    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,640);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,640,1180,660);
     if(select[x].equals("Kars")){
-      text(Statistics.getKarsSize() + " total Kars samples.",20,660);
+      text(Statistics.getKarsSize() + " total Kars samples.",20,680);
     } else if(select[x].equals("Oreo")){
-      text(Statistics.getOreoSize() + " total Oreo samples.",20,660);
+      text(Statistics.getOreoSize() + " total Oreo samples.",20,680);
     } else if(select[x].equals("Manga")){
-      text(Statistics.getMangaSize() + " total Manga samples.",20,660);
+      text(Statistics.getMangaSize() + " total Manga samples.",20,680);
     } else if(select[x].equals("STW")){
-      text(Statistics.getStwSize() + " total Shadow The World samples.",20,660);
+      text(Statistics.getStwSize() + " total Shadow The World samples.",20,680);
     } else if(select[x].equals("MiG")){
-      text(Statistics.getMigSize() + " total Made in Galaxy samples.",20,660);
+      text(Statistics.getMigSize() + " total Made in Galaxy samples.",20,680);
     } else if(select[x].equals(ArrowStands[c])){
-      text(Statistics.getCustomSize() + " total " + ArrowStands[c] + " samples.",20,660);
+      text(Statistics.getCustomSize() + " total " + ArrowStands[c] + " samples.",20,700);
     }
    }
   }
   if(Statistics.getKarsSize() == 100 && select[x].equals("Kars")){
     running = false;
+    fill(224, 45, 0);
     text("Sample limit reached.",20,680);
   }
-  if(Statistics.getKarsSize() >= 30 && select[x].equals("Kars")){
-    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  if(Statistics.getKarsSize() >= 30 && select[x].equals("Kars") && running == false){
+    fill(255);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,670);
   } 
 
   if(Statistics.getOreoSize() == 100 && select[x].equals("Oreo")){
     running = false;
+    fill(224, 45, 0);
     text("Sample limit reached.",20,680);
   }
-  if(Statistics.getOreoSize() >= 30 && select[x].equals("Oreo")){
-    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  if(Statistics.getOreoSize() >= 30 && select[x].equals("Oreo") && running == false){
+    fill(255);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,670);
   }
     
   if(Statistics.getMangaSize() == 100 && select[x].equals("Manga")){
     running = false;
+    fill(224, 45, 0);
     text("Sample limit reached.",20,680);
   }
-  if(Statistics.getMangaSize() >= 30 && select[x].equals("Manga")){
-    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  if(Statistics.getMangaSize() >= 30 && select[x].equals("Manga") && running == false){
+    fill(255);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,670);
   }
     
   if(Statistics.getStwSize() == 100 && select[x].equals("STW")){
     running = false;
+    fill(224, 45, 0);
     text("Sample limit reached.",20,680);
   }
-  if(Statistics.getStwSize() >= 30 && select[x].equals("STW")){
-    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  if(Statistics.getStwSize() >= 30 && select[x].equals("STW") && running == false){
+    fill(255);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,670);
   }
 
   if(Statistics.getMigSize() == 100 && select[x].equals("MiG")){
     running = false;
+    fill(224, 45, 0);
     text("Sample limit reached.",20,680);
   }
-  if(Statistics.getMigSize() >= 30 && select[x].equals("MiG")){
-    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  if(Statistics.getMigSize() >= 30 && select[x].equals("MiG") && running == false){
+    fill(255);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,670);
   }
 
-   if(Statistics.getCustomSize() == 100 && select[x].equals(ArrowStands[c])){
+  if(Statistics.getCustomSize() == 100 && select[x].equals(ArrowStands[c])){
     running = false;
-    text("Sample limit reached.",20,680);
+    fill(224, 45, 0);
+    text("Sample limit reached.",20,725);
   }
-  if(Statistics.getCustomSize() >= 30 && select[x].equals(ArrowStands[c])){
-    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  if(Statistics.getCustomSize() >= 30 && select[x].equals(ArrowStands[c]) && running == false){
+    fill(255);
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,645,1180,680);
   }
  }
 }
@@ -533,17 +547,25 @@ public void keyPressed(){
   if(keyCode == LEFT && c != 0 && running == false){
     c--;
     MyPrivateServer.setCustom(0);
+    Statistics.clearCustomSample();
   } else if (keyCode == LEFT && running == false){
     c = 30;
     MyPrivateServer.setCustom(0);
+    Statistics.clearCustomSample();
   }
   if(keyCode == RIGHT && c!= 30 && running == false){
     c++;
     MyPrivateServer.setCustom(0);
+    Statistics.clearCustomSample();
   } else if(keyCode == RIGHT && running == false){
     c = 0;
     MyPrivateServer.setCustom(0);
+    Statistics.clearCustomSample();
   }
+  //Used to debug without waiting for sample size to increase
+  /*if (key == 'm' && Statistics.getKarsSize() != 100){
+    Statistics.setKarsSample(MyPrivateServer.getTime());
+  }*/
 }
 
 public void sewerFarm(){
@@ -983,6 +1005,7 @@ public class ConfidenceInterval{
   public int getMigSize(){return migSample.size();}
   public void setCustomSample(double c){customSample.add(c);}
   public int getCustomSize(){return customSample.size();}
+  public void clearCustomSample(){customSample.clear();}
 }
 
 public double sdDev(double[] list){
