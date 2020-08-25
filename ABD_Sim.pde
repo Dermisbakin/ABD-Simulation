@@ -208,21 +208,21 @@ public void draw(){
  if(statsMode == true){
   text("Analyze Stand/Spec: " + select[x],20,620);
   if(running == false){
-    if(select[x] == "Kars" && (100 > Statistics.getKarsSize() >= 1)){
+    if(select[x] == "Kars" && Statistics.getKarsSize() < 100 && Statistics.getKarsSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text('Progress Saved.',20,700);
-    } else if(select[x] == "Oreo" && (100 > Statistics.getOreoSize() >= 1)){
+      text("Progress Saved.",20,700);
+    } else if(select[x] == "Oreo" && Statistics.getOreoSize() < 100 && Statistics.getOreoSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text('Progress Saved.',20,700);
-    } else if(select[x] == "Manga" && (100 > Statistics.getMangaSize() >= 1)){
+      text("Progress Saved.",20,700);
+    } else if(select[x] == "Manga" && Statistics.getMangaSize() < 100 && Statistics.getMangaSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text('Progress Saved.',20,700);
-    } else if(select[x] == "STW" && (100 > Statistics.getStwSize() >= 1)){
+      text("Progress Saved.",20,700);
+    } else if(select[x] == "STW" && Statistics.getStwSize() < 100 && Statistics.getStwSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text('Progress Saved.',20,700);
-    } if(select[x] == "MiG" && (100 > Statistics.getMigSize() >= 1)){
+      text("Progress Saved.",20,700);
+    } if(select[x] == "MiG" && Statistics.getMigSize() < 100 && Statistics.getMigSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
-      text('Progress Saved.',20,700);
+      text("Progress Saved.",20,700);
     } else {
       text("Press the UP and DOWN arrow keys to select. Press ENTER to confirm.",20,640);
     }
