@@ -141,7 +141,7 @@ public void draw(){
  line(0,600,1200,600);
  MyLogs.show();
  textAlign(CENTER);
- text("ABD Farming Sim. 1.0",300,50);
+ text("ABD Farming Sim. 1.1.0",300,50);
  if (running == true){
   MyPrivateServer.spawn();
   if (sewers == true){sewerFarm();}
@@ -159,7 +159,6 @@ public void draw(){
     text("H to put on hyperspeed",300,450);
   } else {
     text("Setting up data collection...",300,370);
-    text("You cannot set speed in this mode.",300,560);
   }
  }
  if(statsMode == false){text("Statistics Analysis: off",300,580);}
@@ -167,6 +166,7 @@ public void draw(){
   speed = 1000;
    fill(198, 214, 69);
   text("Statistics Analysis: on",300,580);
+  text("You cannot set speed in this mode.",300,560);
 }
   textAlign(LEFT);
   fill(255);
@@ -225,11 +225,24 @@ public void draw(){
     } else if(select[x].equals("MiG")){
       text(Statistics.getMigSize() + " total Made in Galaxy samples.",20,660);
     }
-    if(Statistics.getKarsSize() == 100 || Statistics.getOreoSize() == 100 || Statistics.getMangaSize() == 100 || Statistics.getStwSize() == 100 || Statistics.getMigSize() == 100){
-      running = false;
-    }
    }
   }
+  if(Statistics.getKarsSize() == 100 && select[x].equals("Kars")){
+      running = false;
+      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+    } else if(Statistics.getOreoSize() == 100 && select[x].equals("Oreo")){
+      running = false;
+      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+    } else if(Statistics.getMangaSize() == 100 && select[x].equals("Manga")){
+      running = false;
+      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+    } else if(Statistics.getStwSize() == 100 && select[x].equals("STW")){
+      running = false;
+      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+    } else if(Statistics.getMigSize() == 100 && select[x].equals("MiG")){
+      running = false;
+      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+    }
  }
 }
 
@@ -376,11 +389,16 @@ public void keyPressed(){
   if(key == 's' && statsMode == false){
     if(sewers == true){sewers = false;}
     else {sewers = true;}
+  } else if(key == 's' && statsMode == true){
+    if(sewers == true && running == false){sewers = false;}
+    else if (running == false){sewers = true;}
   }
-  if(key == ' ' && statsMode == false && (Statistics.getKarsSize() > 0 || Statistics.getOreoSize() > 0 || Statistics.getMangaSize() > 0 || Statistics.getStwSize() > 0 || Statistics.getMigSize() > 0)){
+
+  if(key == ' ' && statsMode == false){
     if(running == false){running = true;}
     else {running = false;}
   }
+
   if (key == 'i' && statsMode == false){
     if (speed != 1){
       speed += 5;
@@ -388,6 +406,7 @@ public void keyPressed(){
       speed += 4;
     }
   }
+
   if (key == 'k' && statsMode == false){
     if (speed != 5 && speed != 1){
       speed -= 5;
@@ -395,6 +414,7 @@ public void keyPressed(){
       speed = 1;
     }
   }
+
   if (key == 'h' && statsMode == false){
     if(speed != 1000){
       speed = 1000;
@@ -402,18 +422,34 @@ public void keyPressed(){
       speed = 5;
     }
   }
+
   if (key =='p' && running == false && statsMode == false){
     statsMode = true;
+    MyPrivateServer.reset();
   } else if (key == 'p' && statsMode == true && running == false){
     statsMode = false;
+    MyPrivateServer.reset();
   }
+
   if(statsMode == true){
-    if (keyCode == UP && x != 4){x++;}
-    else if (keyCode == UP){x = 0;}
-    if (keyCode == DOWN && x != 0){x--;}
-    else if (keyCode == DOWN){x = 4;}
+    if (keyCode == UP && x != 4){
+      x++;
+      MyPrivateServer.reset();
+    }
+    else if (keyCode == UP){
+      x = 0;
+      MyPrivateServer.reset();
+    }
+    if (keyCode == DOWN && x != 0){
+      x--;
+      MyPrivateServer.reset();
+    }
+    else if (keyCode == DOWN){
+      x = 4;
+      MyPrivateServer.reset();
+    }
   }
-  if (key == ENTER && statsMode == true && running == false){
+  if ((key == ENTER && statsMode == true && running == false) && ((Statistics.getKarsSize() != 100 && select[x].equals("Kars")) || (Statistics.getOreoSize() != 100 && select[x].equals("Oreo")) || (Statistics.getMangaSize() != 100 && select[x].equals("Manga")) || (Statistics.getStwSize() != 100 && select[x].equals("STW")) || (Statistics.getMigSize() != 100 && select[x].equals("MiG")))){
     running = true;
   } else if (key == ENTER){
     running = false;
@@ -760,7 +796,7 @@ public class ConfidenceInterval{
       }
       mean = add/karsSample.size();
       stDev = sdDev(list);
-      interval = mean-tDist[karsSample.size()-30]*stDev/sqrt(karsSample.size()) + " and " + mean+tDist[karsSample.size()-30]*stDev/sqrt(karsSample.size());
+      interval = mean-tDist[karsSample.size()-30]*stDev/sqrt(karsSample.size()) + " to " + mean+tDist[karsSample.size()-30]*stDev/sqrt(karsSample.size());
     } else if(s.equals("Kars")){
       interval = 30-karsSample.size() + " more Kars samples needed.";
     }
@@ -772,7 +808,7 @@ public class ConfidenceInterval{
       }
       mean = add/oreoSample.size();
       stDev = sdDev(list);
-      interval = mean-tDist[oreoSample.size()-30]*stDev/sqrt(oreoSample.size()) + " and " + mean+tDist[oreoSample.size()-30]*stDev/sqrt(oreoSample.size());
+      interval = mean-tDist[oreoSample.size()-30]*stDev/sqrt(oreoSample.size()) + " to " + mean+tDist[oreoSample.size()-30]*stDev/sqrt(oreoSample.size());
     } else if(s.equals("Oreo")){
       interval = 30-oreoSample.size() + " more Oreo samples needed.";
     }
@@ -784,7 +820,7 @@ public class ConfidenceInterval{
       }
       mean = add/mangaSample.size();
       stDev = sdDev(list);
-      interval = mean-tDist[mangaSample.size()-30]*stDev/sqrt(mangaSample.size()) + " and " + mean+tDist[mangaSample.size()-30]*stDev/sqrt(mangaSample.size());
+      interval = mean-tDist[mangaSample.size()-30]*stDev/sqrt(mangaSample.size()) + " to " + mean+tDist[mangaSample.size()-30]*stDev/sqrt(mangaSample.size());
     } else if(s.equals("Manga")){
       interval = 30-mangaSample.size() + " more Manga samples needed.";
     }
@@ -796,7 +832,7 @@ public class ConfidenceInterval{
       }
       mean = add/stwSample.size();
       stDev = sdDev(list);
-      interval = mean-tDist[stwSample.size()-30]*stDev/sqrt(stwSample.size()) + " and " + mean+tDist[stwSample.size()-30]*stDev/sqrt(stwSample.size());
+      interval = mean-tDist[stwSample.size()-30]*stDev/sqrt(stwSample.size()) + " to " + mean+tDist[stwSample.size()-30]*stDev/sqrt(stwSample.size());
     } else if(s.equals("STW")){
       interval = 30-stwSample.size() + " more Shadow The World samples needed.";
     }
@@ -808,7 +844,7 @@ public class ConfidenceInterval{
       }
       mean = add/migSample.size();
       stDev = sdDev(list);
-      interval = mean-tDist[migSample.size()-30]*stDev/sqrt(migSample.size()) + " and " + mean+tDist[migSample.size()-30]*stDev/sqrt(migSample.size());
+      interval = mean-tDist[migSample.size()-30]*stDev/sqrt(migSample.size()) + " to " + mean+tDist[migSample.size()-30]*stDev/sqrt(migSample.size());
     } else if(s.equals("MiG")){
       interval = 30-migSample.size() + " more Made in Galaxy samples needed.";
     }
