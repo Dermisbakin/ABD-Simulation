@@ -1,16 +1,17 @@
-String[] ArrowStands = new String[30];
+String[] ArrowStands = new String[31];
 Server MyPrivateServer = new Server();
 Logs MyLogs = new Logs();
 ConfidenceInterval Statistics = new ConfidenceInterval();
 String[] TrowelDig = new String[8];
 double[] tDist = new double[71];
-String[] select = new String[5];
+String[] select = new String[6];
 int digs = 0;
 boolean sewers = true;
 boolean running = false;
 int speed = 5;
 boolean statsMode = false;
 int x = 0;
+int c = 0;
 
 void setup(){
  size(1200,800); 
@@ -44,6 +45,7 @@ void setup(){
  ArrowStands[27] = "Creeper Queen";
  ArrowStands[28] = "Crazy Ruby";
  ArrowStands[29] = "Golden Soft & Wet";
+ ArrowStands[30] = "Monochromatic Purple Haze";
  TrowelDig[0] = "Nothing";
  TrowelDig[1] = "Banknote";
  TrowelDig[2] = "Rokakaka";
@@ -57,6 +59,7 @@ void setup(){
  select[2] = "Manga";
  select[3] = "STW";
  select[4] = "MiG";
+ select[5] = ArrowStands[c];
     tDist[0] = 2.0452;
     tDist[1] = 2.0423;
     tDist[2] = 2.0395;
@@ -141,7 +144,7 @@ public void draw(){
  line(0,600,1200,600);
  MyLogs.show();
  textAlign(CENTER);
- text("ABD Farming Sim. 1.1.2",300,50);
+ text("ABD Farming Sim. 1.2.1",300,50);
  if (running == true){
   MyPrivateServer.spawn();
   if (sewers == true){sewerFarm();}
@@ -157,10 +160,15 @@ public void draw(){
     text("I to speed up simulation",300,410);
     text("K to slow down simulation",300,430);
     text("H to put on hyperspeed",300,450);
+    fill(0, 222, 59);
+    text("LEFT and RIGHT keys to set Custom Stand Tracker.",300,470);
+    fill(255,0,0);
+    text("Changing Custom Stand will reset your current progress in Custom Stand Tracker.",300,490);
   } else {
     text("Setting up data collection...",300,370);
   }
  }
+ fill(198, 214, 69);
  if(statsMode == false){text("Statistics Analysis: off",300,580);}
  else {
    fill(198, 214, 69);
@@ -194,6 +202,10 @@ public void draw(){
  text("Kars Obtained: " + MyPrivateServer.getKars(),15,290);
   textAlign(LEFT);
  text("Oreos Obtained: " + MyPrivateServer.getOreos(),225,290);
+ textAlign(LEFT);
+ fill(0, 222, 59);
+ text(ArrowStands[c] + " Obtained: " + MyPrivateServer.getCustom(),15,270);
+ fill(255);
   textAlign(LEFT);
  text("Mangas Obtained: " + MyPrivateServer.getMangas(),415,290);
   textAlign(CENTER);
@@ -208,23 +220,28 @@ public void draw(){
  if(statsMode == true){
   text("Analyze Stand/Spec: " + select[x],20,620);
   if(running == false){
-    if(select[x] == "Kars" && Statistics.getKarsSize() < 100 && Statistics.getKarsSize() >= 1){
+    if(select[x].equals("Kars") && Statistics.getKarsSize() < 100 && Statistics.getKarsSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
       text("Progress Saved.",20,700);
-    } else if(select[x] == "Oreo" && Statistics.getOreoSize() < 100 && Statistics.getOreoSize() >= 1){
+    } else if(select[x].equals("Oreo") && Statistics.getOreoSize() < 100 && Statistics.getOreoSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
       text("Progress Saved.",20,700);
-    } else if(select[x] == "Manga" && Statistics.getMangaSize() < 100 && Statistics.getMangaSize() >= 1){
+    } else if(select[x].equals("Manga") && Statistics.getMangaSize() < 100 && Statistics.getMangaSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
       text("Progress Saved.",20,700);
-    } else if(select[x] == "STW" && Statistics.getStwSize() < 100 && Statistics.getStwSize() >= 1){
+    } else if(select[x].equals("STW") && Statistics.getStwSize() < 100 && Statistics.getStwSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
       text("Progress Saved.",20,700);
-    } else if(select[x] == "MiG" && Statistics.getMigSize() < 100 && Statistics.getMigSize() >= 1){
+    } else if(select[x].equals("MiG") && Statistics.getMigSize() < 100 && Statistics.getMigSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
+      text("Progress Saved.",20,700);
+    }  else if(select[x].equals(ArrowStands[c]) && Statistics.getCustomSize() < 100 && Statistics.getCustomSize() >= 1){
+      text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
+      text("LEFT and RIGHT keys to set Custom Stand Tracker.",20,470);
       text("Progress Saved.",20,700);
     } else {
       text("Press the UP and DOWN arrow keys to select. Press ENTER to confirm.",20,640);
+      if (select[x].equals(ArrowStands[c])){text("LEFT and RIGHT keys to set Custom Stand Tracker.",20,660);}
     }
   }
 
@@ -243,6 +260,8 @@ public void draw(){
       text(Statistics.getStwSize() + " total Shadow The World samples.",20,660);
     } else if(select[x].equals("MiG")){
       text(Statistics.getMigSize() + " total Made in Galaxy samples.",20,660);
+    } else if(select[x].equals(ArrowStands[c])){
+      text(Statistics.getCustomSize() + " total " + ArrowStands[c] + " samples.",20,660);
     }
    }
   }
@@ -285,6 +304,14 @@ public void draw(){
   if(Statistics.getMigSize() >= 30 && select[x].equals("MiG")){
     text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
   }
+
+   if(Statistics.getCustomSize() == 100 && select[x].equals(ArrowStands[c])){
+    running = false;
+    text("Sample limit reached.",20,680);
+  }
+  if(Statistics.getCustomSize() >= 30 && select[x].equals(ArrowStands[c])){
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  }
  }
 }
 
@@ -313,7 +340,7 @@ public String arrowRoll(){
 }
 
 public class Server{
-  private int frogs, masks, spheres, arrows, rokas, lire, trowels, dirtPiles, Kars, Oreos, Mangas, cams, diaries, STWs, MiGs;
+  private int frogs, masks, spheres, arrows, rokas, lire, trowels, dirtPiles, Kars, Oreos, Mangas, cams, diaries, STWs, MiGs, custom;
   private double time;
   private String stand;
   public Server(){
@@ -334,6 +361,7 @@ public class Server{
   diaries = 0;
   STWs = 0;
   MiGs = 0;
+  custom = 0;
   }
   public void spawn(){
     time+= 0.25;
@@ -389,6 +417,7 @@ public class Server{
     diaries = 0;
     STWs = 0;
     MiGs = 0;
+    custom = 0;
   }
   
   public void setTime(double t){time = t;}
@@ -425,6 +454,8 @@ public class Server{
   public int getSTWs(){return STWs;}
   public void setMiGs(int Mi){MiGs = Mi;}
   public int getMiGs(){return MiGs;}
+  public void setCustom(int C){custom = C;}
+  public int getCustom(){return custom;}
 }
 
 public void keyPressed(){
@@ -476,7 +507,7 @@ public void keyPressed(){
   }
 
   if(statsMode == true){
-    if (keyCode == UP && x != 4){
+    if (keyCode == UP && x != 5){
       x++;
       MyPrivateServer.reset();
     }
@@ -489,7 +520,7 @@ public void keyPressed(){
       MyPrivateServer.reset();
     }
     else if (keyCode == DOWN){
-      x = 4;
+      x = 5;
       MyPrivateServer.reset();
     }
   }
@@ -499,6 +530,20 @@ public void keyPressed(){
     running = false;
   }
 
+  if(keyCode == LEFT && c != 0 && running == false){
+    c--;
+    MyPrivateServer.setCustom(0);
+  } else if (keyCode == LEFT && running == false){
+    c = 30;
+    MyPrivateServer.setCustom(0);
+  }
+  if(keyCode == RIGHT && c!= 30 && running == false){
+    c++;
+    MyPrivateServer.setCustom(0);
+  } else if(keyCode == RIGHT && running == false){
+    c = 0;
+    MyPrivateServer.setCustom(0);
+  }
 }
 
 public void sewerFarm(){
@@ -602,9 +647,12 @@ public void arrowFarm(){
     MyPrivateServer.setArrows(MyPrivateServer.getArrows()-1);
     MyPrivateServer.setStand(stand);
     text(stand + " Obtained!",300,450);
+    if(stand.equals(ArrowStands[c])){
+      MyPrivateServer.setCustom(MyPrivateServer.getCustom()+1);
+    }
     MyLogs.display(stand + " Obtained!");
   }
-  if ((!MyPrivateServer.getStand().equals("Doppio's King Crimson")) && (!MyPrivateServer.getStand().equals("Whitesnake")) && (!MyPrivateServer.getStand().equals("The World")) && (MyPrivateServer.getRokas() > 0)){
+  if ((!MyPrivateServer.getStand().equals("Doppio's King Crimson")) && (!MyPrivateServer.getStand().equals("Whitesnake")) && (!MyPrivateServer.getStand().equals("The World")) && (MyPrivateServer.getRokas() > 0) && !(MyPrivateServer.getStand().equals("Purple Haze") && c == 30)){
     MyPrivateServer.setRokas(MyPrivateServer.getRokas()-1);
     text("Stand Roka'd!",300,450);
     MyLogs.display("Stand Roka'd!");
@@ -628,7 +676,7 @@ public void rareRoll(){
        MyPrivateServer.setMangas(MyPrivateServer.getMangas()+1);
        text("Two-Arm Doppio's King Crimson upgraded to Manga King Crimson!",300,510);
        MyLogs.display("Two-Arm Doppio's King Crimson upgraded to Manga King Crimson!");
-       if (select[x] == "Manga"){
+       if (select[x] == "Manga" && statsMode == true){
         Statistics.setMangaSample(MyPrivateServer.getTime());
         MyPrivateServer.reset();
        }
@@ -639,7 +687,7 @@ public void rareRoll(){
       MyPrivateServer.setOreos(MyPrivateServer.getOreos()+1);
       text("Full-Body King Crimson upgraded to Monochromatic King Crimson!",300,510);
       MyLogs.display("Full-Body King Crimson upgraded to Monochromatic King Crimson!");
-      if (select[x] == "Oreo"){
+      if (select[x] == "Oreo" && statsMode == true){
         Statistics.setOreoSample(MyPrivateServer.getTime());
         MyPrivateServer.reset();
        }
@@ -666,7 +714,7 @@ public void rareRoll(){
        MyPrivateServer.setKars(MyPrivateServer.getKars()+1);
        text("Upgraded Vampire to Kars!",300,510);
        MyLogs.display("Upgraded Vampire to Kars!");
-       if (select[x] == "Kars"){
+       if (select[x] == "Kars" && statsMode == true){
         Statistics.setKarsSample(MyPrivateServer.getTime());
         MyPrivateServer.reset();
        }
@@ -687,7 +735,7 @@ public void rareRoll(){
        MyPrivateServer.setMiGs(MyPrivateServer.getMiGs()+1);
        text("C-Moon upgraded to Made in Galaxy!",300,490);
        MyLogs.display("C-Moon upgraded to Made in Galaxy!");
-       if (select[x] == "MiG"){
+       if (select[x] == "MiG" && statsMode == true){
         Statistics.setMigSample(MyPrivateServer.getTime());
         MyPrivateServer.reset();
        }
@@ -709,11 +757,27 @@ public void rareRoll(){
     MyPrivateServer.setSTWs(MyPrivateServer.getSTWs()+1);
     text("Upgraded Vampiric The World to Shadow The World!",300,490);
     MyLogs.display("Upgraded Vampiric The World to Shadow The World!");
-    if (select[x] == "STW"){
+    if (select[x] == "STW" && statsMode == true){
         Statistics.setStwSample(MyPrivateServer.getTime());
         MyPrivateServer.reset();
        }
   } else if((MyPrivateServer.getStand().equals("The World")) && (MyPrivateServer.getRokas() > 0) && (MyPrivateServer.getCams() == 0)){
+    MyPrivateServer.setRokas(MyPrivateServer.getRokas()-1);
+    text("Stand Roka'd!",300,450);
+    MyLogs.display("Stand Roka'd!");
+    MyPrivateServer.setStand("Standless");
+  }
+
+  if((MyPrivateServer.getStand().equals("Purple Haze")) && (MyPrivateServer.getRokas() > 0) && (MyPrivateServer.getSpheres() > 0) && (ArrowStands[c].equals("Monochromatic Purple Haze"))){
+    MyPrivateServer.setSpheres(MyPrivateServer.getSpheres()-1);
+    MyPrivateServer.setCustom(MyPrivateServer.getCustom()+1);
+    text("Upgraded Purple Haze to Monochromatic Purple Haze!",300,470);
+    MyLogs.display("Upgraded Purple Haze to Monochromatic Purple Haze!");
+    if (select[x].equals("Monochromatic Purple Haze") && statsMode == true){
+        Statistics.setMangaSample(MyPrivateServer.getTime());
+        MyPrivateServer.reset();
+       }
+  } else if((MyPrivateServer.getStand().equals("Purple Haze")) && (MyPrivateServer.getRokas() > 0)){
     MyPrivateServer.setRokas(MyPrivateServer.getRokas()-1);
     text("Stand Roka'd!",300,450);
     MyLogs.display("Stand Roka'd!");
@@ -818,13 +882,14 @@ public class Logs{
 }
 
 public class ConfidenceInterval{
-  private ArrayList<Double> karsSample, oreoSample, mangaSample, stwSample, migSample;
+  private ArrayList<Double> karsSample, oreoSample, mangaSample, stwSample, migSample, customSample;
   public ConfidenceInterval(){
     karsSample = new ArrayList<Double>();
     oreoSample = new ArrayList<Double>();
     mangaSample = new ArrayList<Double>();
     stwSample = new ArrayList<Double>();
     migSample = new ArrayList<Double>();
+    customSample = new ArrayList<Double>();
   }
   public String interval(String s){
     double[] list;
@@ -892,6 +957,18 @@ public class ConfidenceInterval{
     } else if(s.equals("MiG")){
       interval = 30-migSample.size() + " more Made in Galaxy samples needed.";
     }
+    if(s.equals(ArrowStands[c]) && customSample.size()>=30){
+      list = new double[customSample.size()];
+      for(int i=0; i<customSample.size();i++){
+        add += customSample.get(i);
+        list[i]=customSample.get(i);
+      }
+      mean = add/customSample.size();
+      stDev = sdDev(list);
+      interval = mean-tDist[customSample.size()-30]*stDev/sqrt(customSample.size()) + " to " + mean+tDist[customSample.size()-30]*stDev/sqrt(customSample.size());
+    } else if(s.equals(ArrowStands[c])){
+      interval = 30-customSample.size() + " more Made in Galaxy samples needed.";
+    }
     return interval;
   }
   public void setKarsSample(double k){karsSample.add(k);}
@@ -904,6 +981,8 @@ public class ConfidenceInterval{
   public int getStwSize(){return stwSample.size();}
   public void setMigSample(double M){migSample.add(M);}
   public int getMigSize(){return migSample.size();}
+  public void setCustomSample(double c){customSample.add(c);}
+  public int getCustomSize(){return customSample.size();}
 }
 
 public double sdDev(double[] list){
