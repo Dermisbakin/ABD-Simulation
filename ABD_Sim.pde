@@ -141,7 +141,7 @@ public void draw(){
  line(0,600,1200,600);
  MyLogs.show();
  textAlign(CENTER);
- text("ABD Farming Sim. 1.1.0",300,50);
+ text("ABD Farming Sim. 1.1.2",300,50);
  if (running == true){
   MyPrivateServer.spawn();
   if (sewers == true){sewerFarm();}
@@ -207,7 +207,27 @@ public void draw(){
  text("Framerate: " + speed, 15, 30);
  if(statsMode == true){
   text("Analyze Stand/Spec: " + select[x],20,620);
-  if(running == false){text("Press the UP and DOWN arrow keys to select. Press ENTER to confirm.",20,640);}
+  if(running == false){
+    if(select[x] == "Kars" && (100 > Statistics.getKarsSize() >= 1)){
+      text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
+      text('Progress Saved.',20,700);
+    } else if(select[x] == "Oreo" && (100 > Statistics.getOreoSize() >= 1)){
+      text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
+      text('Progress Saved.',20,700);
+    } else if(select[x] == "Manga" && (100 > Statistics.getMangaSize() >= 1)){
+      text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
+      text('Progress Saved.',20,700);
+    } else if(select[x] == "STW" && (100 > Statistics.getStwSize() >= 1)){
+      text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
+      text('Progress Saved.',20,700);
+    } if(select[x] == "MiG" && (100 > Statistics.getMigSize() >= 1)){
+      text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
+      text('Progress Saved.',20,700);
+    } else {
+      text("Press the UP and DOWN arrow keys to select. Press ENTER to confirm.",20,640);
+    }
+  }
+
   if(running == true){
     if (Statistics.interval(select[x]).contains("more")){
      text(Statistics.interval(select[x]),20,660);
@@ -227,21 +247,44 @@ public void draw(){
    }
   }
   if(Statistics.getKarsSize() == 100 && select[x].equals("Kars")){
-      running = false;
-      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
-    } else if(Statistics.getOreoSize() == 100 && select[x].equals("Oreo")){
-      running = false;
-      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
-    } else if(Statistics.getMangaSize() == 100 && select[x].equals("Manga")){
-      running = false;
-      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
-    } else if(Statistics.getStwSize() == 100 && select[x].equals("STW")){
-      running = false;
-      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
-    } else if(Statistics.getMigSize() == 100 && select[x].equals("MiG")){
-      running = false;
-      text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
-    }
+    running = false;
+    text("Sample limit reached.",20,680);
+  }
+  if(Statistics.getKarsSize() >= 30 && select[x].equals("Kars")){
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  } 
+
+  if(Statistics.getOreoSize() == 100 && select[x].equals("Oreo")){
+    running = false;
+    text("Sample limit reached.",20,680);
+  }
+  if(Statistics.getOreoSize() >= 30 && select[x].equals("Oreo")){
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  }
+    
+  if(Statistics.getMangaSize() == 100 && select[x].equals("Manga")){
+    running = false;
+    text("Sample limit reached.",20,680);
+  }
+  if(Statistics.getMangaSize() >= 30 && select[x].equals("Manga")){
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  }
+    
+  if(Statistics.getStwSize() == 100 && select[x].equals("STW")){
+    running = false;
+    text("Sample limit reached.",20,680);
+  }
+  if(Statistics.getStwSize() >= 30 && select[x].equals("STW")){
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  }
+
+  if(Statistics.getMigSize() == 100 && select[x].equals("MiG")){
+    running = false;
+    text("Sample limit reached.",20,680);
+  }
+  if(Statistics.getMigSize() >= 30 && select[x].equals("MiG")){
+    text("We are 95% confident that the interval from " + Statistics.interval(select[x]) + " contains the true mean time needed to obtain " + select[x] + ".",20,660);
+  }
  }
 }
 
