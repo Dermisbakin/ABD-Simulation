@@ -672,6 +672,10 @@ public void arrowFarm(){
     if(stand.equals(ArrowStands[c])){
       MyPrivateServer.setCustom(MyPrivateServer.getCustom()+1);
     }
+    if(statsMode == true && stand.equals(select[x])){
+      Statistics.setCustomSample(MyPrivateServer.getTime());
+      MyPrivateServer.reset();
+    }
     MyLogs.display(stand + " Obtained!");
   }
   if ((!MyPrivateServer.getStand().equals("Doppio's King Crimson")) && (!MyPrivateServer.getStand().equals("Whitesnake")) && (!MyPrivateServer.getStand().equals("The World")) && (MyPrivateServer.getRokas() > 0) && !(MyPrivateServer.getStand().equals("Purple Haze") && c == 30)){
