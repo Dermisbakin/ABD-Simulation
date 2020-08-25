@@ -220,7 +220,7 @@ public void draw(){
     } else if(select[x] == "STW" && Statistics.getStwSize() < 100 && Statistics.getStwSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
       text("Progress Saved.",20,700);
-    } if(select[x] == "MiG" && Statistics.getMigSize() < 100 && Statistics.getMigSize() >= 1){
+    } else if(select[x] == "MiG" && Statistics.getMigSize() < 100 && Statistics.getMigSize() >= 1){
       text("Press the UP and DOWN arrow keys to analyze another. Press ENTER to continue current analysis.",20,640);
       text("Progress Saved.",20,700);
     } else {
