@@ -163,7 +163,6 @@ public void draw(){
  }
  if(statsMode == false){text("Statistics Analysis: off",300,580);}
  else {
-  speed = 1000;
    fill(198, 214, 69);
   text("Statistics Analysis: on",300,580);
   text("You cannot set speed in this mode.",300,560);
@@ -425,9 +424,11 @@ public void keyPressed(){
 
   if (key =='p' && running == false && statsMode == false){
     statsMode = true;
+    speed = 1000;
     MyPrivateServer.reset();
   } else if (key == 'p' && statsMode == true && running == false){
     statsMode = false;
+    speed = 5;
     MyPrivateServer.reset();
   }
 
