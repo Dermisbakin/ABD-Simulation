@@ -59,7 +59,6 @@ void setup(){
  select[2] = "Manga";
  select[3] = "STW";
  select[4] = "MiG";
- select[5] = ArrowStands[c];
     tDist[0] = 2.0452;
     tDist[1] = 2.0423;
     tDist[2] = 2.0395;
@@ -136,6 +135,7 @@ void setup(){
 }
 
 public void draw(){
+select[5] = ArrowStands[c];
  background(0);
  frameRate(speed);
  stroke(255);
@@ -144,7 +144,7 @@ public void draw(){
  line(0,600,1200,600);
  MyLogs.show();
  textAlign(CENTER);
- text("ABD Farming Sim. 1.2.1",300,50);
+ text("ABD Farming Sim. 1.2.2",300,50);
  if (running == true){
   MyPrivateServer.spawn();
   if (sewers == true){sewerFarm();}
@@ -524,7 +524,7 @@ public void keyPressed(){
       MyPrivateServer.reset();
     }
   }
-  if ((key == ENTER && statsMode == true && running == false) && ((Statistics.getKarsSize() != 100 && select[x].equals("Kars")) || (Statistics.getOreoSize() != 100 && select[x].equals("Oreo")) || (Statistics.getMangaSize() != 100 && select[x].equals("Manga")) || (Statistics.getStwSize() != 100 && select[x].equals("STW")) || (Statistics.getMigSize() != 100 && select[x].equals("MiG")))){
+  if ((key == ENTER && statsMode == true && running == false) && ((Statistics.getKarsSize() != 100 && select[x].equals("Kars")) || (Statistics.getOreoSize() != 100 && select[x].equals("Oreo")) || (Statistics.getMangaSize() != 100 && select[x].equals("Manga")) || (Statistics.getStwSize() != 100 && select[x].equals("STW")) || (Statistics.getMigSize() != 100 && select[x].equals("MiG")) || (Statistics.getCustomSize() != 100 && select[x].equals(ArrowStands[c])))){
     running = true;
   } else if (key == ENTER){
     running = false;
@@ -681,7 +681,7 @@ public void rareRoll(){
         MyPrivateServer.reset();
        }
     }
-    if ((MyPrivateServer.getSpheres() > 0) && (MyPrivateServer.getStand().equals("Full-Body King Crimson"))){
+    if ((MyPrivateServer.getSpheres() > 0) && (MyPrivateServer.getStand().equals("Full-Body King Crimson")) && !(statsMode == true && select[x].equals(ArrowStands[30]))){
       MyPrivateServer.setSpheres(MyPrivateServer.getSpheres()-1);
       MyPrivateServer.setStand("Monochromatic King Crimson");
       MyPrivateServer.setOreos(MyPrivateServer.getOreos()+1);
@@ -768,13 +768,13 @@ public void rareRoll(){
     MyPrivateServer.setStand("Standless");
   }
 
-  if((MyPrivateServer.getStand().equals("Purple Haze")) && (MyPrivateServer.getRokas() > 0) && (MyPrivateServer.getSpheres() > 0) && (ArrowStands[c].equals("Monochromatic Purple Haze"))){
+  if((MyPrivateServer.getStand().equals("Purple Haze")) && (MyPrivateServer.getSpheres() > 0) && (ArrowStands[c].equals("Monochromatic Purple Haze"))){
     MyPrivateServer.setSpheres(MyPrivateServer.getSpheres()-1);
     MyPrivateServer.setCustom(MyPrivateServer.getCustom()+1);
     text("Upgraded Purple Haze to Monochromatic Purple Haze!",300,470);
     MyLogs.display("Upgraded Purple Haze to Monochromatic Purple Haze!");
     if (select[x].equals("Monochromatic Purple Haze") && statsMode == true){
-        Statistics.setMangaSample(MyPrivateServer.getTime());
+        Statistics.setCustomSample(MyPrivateServer.getTime());
         MyPrivateServer.reset();
        }
   } else if((MyPrivateServer.getStand().equals("Purple Haze")) && (MyPrivateServer.getRokas() > 0)){
@@ -967,7 +967,7 @@ public class ConfidenceInterval{
       stDev = sdDev(list);
       interval = mean-tDist[customSample.size()-30]*stDev/sqrt(customSample.size()) + " to " + mean+tDist[customSample.size()-30]*stDev/sqrt(customSample.size());
     } else if(s.equals(ArrowStands[c])){
-      interval = 30-customSample.size() + " more Made in Galaxy samples needed.";
+      interval = 30-customSample.size() + " more " + ArrowStands[c] + " samples needed.";
     }
     return interval;
   }
